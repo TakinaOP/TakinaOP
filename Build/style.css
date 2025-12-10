@@ -1,0 +1,250 @@
+/* --- RESET & GLOBAL --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; background-color: #fff; overflow-x: hidden; }
+html { scroll-behavior: smooth; } /* Smooth Scroll */
+
+/* Utility */
+.hidden { display: none !important; }
+
+/* =========================================
+   STYLE LANDING PAGE
+   ========================================= */
+#landing-page { width: 100%; min-height: 100vh; background: #fff; }
+
+.navbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 5%; position: fixed; width: 100%; top: 0; z-index: 1000;
+    background: rgba(15, 32, 39, 0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.logo { font-size: 1.4rem; font-weight: 800; color: white; cursor: pointer; }
+.logo span { color: #4cc9f0; }
+.nav-links { display: flex; gap: 25px; list-style: none; }
+.nav-links a { color: #ccc; text-decoration: none; font-weight: 500; transition: 0.3s; font-size: 0.95rem; }
+.nav-links a:hover, .nav-links a.active { color: #4cc9f0; }
+.btn-nav-peta { color: #4cc9f0 !important; font-weight: bold !important; border: 1px solid #4cc9f0; padding: 5px 15px; border-radius: 20px; }
+.btn-nav-peta:hover { background: #4cc9f0; color: #fff !important; }
+
+.auth-buttons { display: flex; gap: 15px; }
+.btn-login { color: white; text-decoration: none; font-weight: 600; padding: 8px 15px; }
+.btn-signup { background: linear-gradient(135deg, #4cc9f0, #4361ee); color: white; padding: 8px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; }
+
+.hero {
+    position: relative; min-height: 100vh;
+    background: radial-gradient(circle at top right, #1a2a33, #0f2027);
+    display: flex; align-items: center; justify-content: center;
+    padding-top: 80px; padding-bottom: 50px;
+}
+.container { width: 90%; max-width: 1200px; display: flex; align-items: center; justify-content: space-between; gap: 50px; z-index: 10; }
+.hero-content { flex: 1; color: white; }
+.tagline { background: rgba(76, 201, 240, 0.15); padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; color: #4cc9f0; margin-bottom: 20px; display: inline-block; border: 1px solid rgba(76, 201, 240, 0.3); }
+.hero-content h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 25px; font-weight: 800; }
+.hero-content p { font-size: 1.1rem; opacity: 0.85; margin-bottom: 40px; }
+.hero-image { flex: 1; display: flex; justify-content: flex-end; }
+.hero-image img { width: 100%; max-width: 500px; animation: floatGlobe 6s ease-in-out infinite; }
+@keyframes floatGlobe { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+.wave-bottom { position: absolute; bottom: -5px; left: 0; width: 100%; line-height: 0; z-index: 5; }
+
+/* INFOGRAFIS */
+.info-section { padding: 80px 5%; background-color: #f8f9fa; text-align: center; }
+.section-title h2 { font-size: 2.5rem; color: #1e293b; margin-bottom: 10px; }
+.section-title p { color: #64748b; margin-bottom: 50px; font-size: 1.1rem; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; max-width: 1200px; margin: 0 auto 60px; }
+.gallery-item { position: relative; border-radius: 15px; overflow: hidden; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1); height: 250px; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.gallery-item:hover img { transform: scale(1.1); }
+.overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); opacity: 0; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
+.gallery-item:hover .overlay { opacity: 1; }
+.info-stats { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+.card-stat { background: white; padding: 30px; border-radius: 15px; width: 250px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: 0.3s; }
+.card-stat:hover { transform: translateY(-10px); }
+.card-stat i { font-size: 2.5rem; color: #4cc9f0; margin-bottom: 15px; }
+.card-stat h3 { font-size: 2rem; color: #1e293b; margin-bottom: 5px; }
+
+/* =========================================
+   FOOTER MODERN (GAYA FLOAT CARD)
+   ========================================= */
+
+.footer-modern-section {
+    /* Background area footer (Warna lembut agar card putih menonjol) */
+    background-color: #f1f5f9; 
+    padding: 80px 20px 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-wrapper {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px; /* Jarak antara Card utama dan Copyright bar */
+}
+
+/* --- 1. CARD PUTIH UTAMA --- */
+.footer-card {
+    background: #ffffff;
+    width: 100%;
+    border-radius: 30px; /* Sudut sangat melengkung */
+    padding: 50px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.03); /* Bayangan sangat halus */
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+/* Kiri: Brand */
+.footer-brand {
+    flex: 1;
+    min-width: 300px;
+}
+
+.brand-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 15px;
+    display: flex; align-items: center; gap: 10px;
+}
+.brand-title i { color: #22c55e; } /* Ikon Globe Hijau */
+.brand-title span { color: #0ea5e9; } /* Teks Biru */
+
+.brand-desc {
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 450px;
+}
+
+/* Kanan: Icons Container */
+.footer-icons {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Item Ikon Individual */
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    gap: 12px;
+    transition: transform 0.3s;
+}
+.icon-item:hover { transform: translateY(-5px); }
+
+/* Lingkaran Ikon */
+.circle-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    transition: box-shadow 0.3s;
+}
+.icon-item:hover .circle-icon { box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+/* Warna Pastel untuk Background Ikon */
+.wa-bg { background: #dcfce7; color: #16a34a; }   /* Hijau WA */
+.li-bg { background: #e0f2fe; color: #0284c7; }   /* Biru LinkedIn */
+.ig-bg { background: #fae8ff; color: #d946ef; }   /* Ungu IG */
+.mail-bg { background: #ffedd5; color: #ea580c; } /* Oranye Email */
+
+.icon-item span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* --- 2. COPYRIGHT PILL (BAR BAWAH) --- */
+.copyright-pill {
+    background: #e2e8f0; /* Abu-abu agak gelap dari background utama */
+    width: 90%;
+    padding: 15px 30px;
+    border-radius: 50px; /* Bentuk Pill/Kapsul */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.partner {
+    display: flex; align-items: center; gap: 8px;
+}
+.partner i { color: #0ea5e9; }
+
+/* Responsif Mobile */
+@media (max-width: 768px) {
+    .footer-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+    }
+    .footer-brand { align-items: center; display: flex; flex-direction: column; }
+    .footer-icons { gap: 20px; width: 100%; justify-content: space-around; }
+    .circle-icon { width: 50px; height: 50px; font-size: 1.2rem; }
+    
+    .copyright-pill {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        border-radius: 20px;
+        width: 100%;
+    }
+}
+
+/* =========================================
+   STYLE DASHBOARD APP (PETA)
+   ========================================= */
+#dashboard-app { display: flex; flex-direction: column; height: 100vh; background: #f4f6f8; overflow: hidden; }
+
+.navbar-dash { background-color: #1e293b; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; color: white; flex-shrink: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.logo-dash { font-weight: 600; cursor: pointer; display: flex; gap: 10px; align-items: center; } .logo-dash:hover { color: #4cc9f0; }
+.search-container { position: relative; width: 350px; } .search-container input { width: 100%; padding: 8px 40px 8px 15px; border-radius: 50px; border: none; outline: none; background: #f1f5f9; } .search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #64748b; }
+
+.main-content { display: flex; flex: 1; height: 100%; position: relative; overflow: hidden; }
+
+.sidebar { width: 380px; background: white; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; z-index: 2; overflow-y: auto; box-shadow: 4px 0 15px rgba(0,0,0,0.05); }
+.sidebar-header { padding: 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; } .sidebar-header h3 { color: #334155; font-size: 1.1rem; font-weight: 700; margin: 0; }
+.school-item { padding: 20px; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; background: white; } .school-item:hover { background: #f0f9ff; border-left: 4px solid #0ea5e9; padding-left: 16px; }
+.school-item h4 { margin: 0 0 8px; font-size: 1.05rem; color: #1e293b; font-weight: 700; } .school-item p { margin: 0 0 10px; font-size: 0.9rem; color: #64748b; }
+.badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; color: white; }
+.badge.negeri { background-color: #22c55e; } .badge.swasta { background-color: #3b82f6; }
+
+#map { flex: 1; width: 100%; height: 100%; position: relative; }
+
+/* --- RIGHT PANEL (BIODATA) --- */
+.right-panel {
+    position: absolute; top: 20px; right: 20px; width: 320px;
+    background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 1000; transform: translateX(350px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex; flex-direction: column; max-height: 90%; overflow: hidden;
+}
+.right-panel.active { transform: translateX(0); }
+.panel-header { background: #1e293b; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+.panel-header h3 { margin: 0; font-size: 1.1rem; }
+.close-panel { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+.panel-body { padding: 20px; overflow-y: auto; }
+.detail-item { margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+.detail-item:last-child { border-bottom: none; }
+.detail-item .label { font-size: 0.8rem; color: #64748b; display: block; margin-bottom: 3px; }
+.detail-item p { font-size: 0.95rem; color: #334155; font-weight: 500; margin: 0; }
+.btn-rute { display: block; text-align: center; background: #0ea5e9; color: white; padding: 10px; border-radius: 8px; text-decoration: none; margin-top: 10px; font-weight: 600; transition: 0.3s; }
+.btn-rute:hover { background: #0284c7; }
+
+/* Responsif HP */
+@media (max-width: 900px) {
+    .container { flex-direction: column; text-align: center; } .hero-image { justify-content: center; margin-top: 30px; } .hero-image img { width: 80%; }
+    .nav-links, .auth-buttons { display: none; }
+    .sidebar { display: none; } /* Hide sidebar in mobile */
+    .right-panel { width: 90%; right: 5%; top: 60px; }
+    .footer-content { flex-direction: column; text-align: center; }
+    .social-btn { margin: 0 auto; }
+}
