@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Weather & Map Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { overflow: hidden; } 
+        .sidebar { height: 100vh; background-color: #212529; color: white; overflow-y: auto; padding: 20px; }
+        .main-content { height: 100vh; overflow-y: scroll; padding: 30px; background-color: #f4f6f9; }
+        .metric-card { border-left: 5px solid #0d6efd; margin-bottom: 20px; transition: 0.3s; }
+        .metric-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        /* Style Peta */
+        #map { height: 500px; width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 sidebar">
+            <h4 class="text-center mb-4">⛈️ AI Weather</h4>
+            <hr>
+            <form id="predictForm">
+                <div class="mb-3">
+                    <label>Pilih Model:</label>
+                    <select class="form-select" id="modelSelect">
+                        <option disabled selected>-- Pilih --</option>
+                        {% for name in metrics.keys() %}
+                        <option value="{{ name }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <small class="text-white-50">Input Cuaca:</small>
+                <input type="number" id="lat" class="form-control mb-2" placeholder="Lat" value="-6.9">
+                <input type="number" id="lon" class="form-control mb-2" placeholder="Lon" value="107.6">
+                <input type="number" id="suhu" class="form-control mb-2" placeholder="Suhu" value="25">
+                <input type="number" id="lembab" class="form-control mb-2" placeholder="Lembab" value="80">
+                <input type="number" id="tekanan" class="form-control mb-2" placeholder="Tekanan" value="1010">
+                <input type="number" id="angin" class="form-control mb-2" placeholder="Angin" value="10">
+                <button type="submit" class="btn btn-primary w-100 mt-3">Prediksi</button>
+            </form>
+            <div id="resultBox" class="alert alert-success mt-4 d-none">
+                <h6>Hasil:</h6>
+                <strong id="resValue" style="font-size: 1.2em;">...</strong>
+                <p class="small mb-0" id="resType">...</p>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-lg-10 main-content">
+            <h2 class="mb-4">Dashboard Evaluasi Model Machine Learning</h2>
+
+            <h5 class="text-primary">1. Klasifikasi (Hujan / Tidak)</h5>
+            <div class="row">
+                {% for name, data in metrics.items() %}
+                {% if data.type == 'Klasifikasi' %}
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-body">
+                            <h6>{{ name }}</h6>
+                            <h2 class="text-success">{{ data.accuracy }}%</h2>
+                            <small>Akurasi</small>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <h5 class="text-warning mt-4">2. Regresi (Curah Hujan mm)</h5>
+            <div class="row">
+                {% for name, data in metrics.items() %}
+                {% if data.type == 'Regresi' %}
+                <div class="col-md-4">
+                    <div class="card metric-card" style="border-left-color: #ffc107;">
+                        <div class="card-body">
+                            <h6>{{ name }}</h6>
+                            <div>RMSE: <strong>{{ data.rmse }}</strong></div>
+                            <div>MAE: <strong>{{ data.mae }}</strong></div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <hr class="my-5">
+
+            <h3 class="text-info mb-3">📍 Peta Persebaran Curah Hujan (Jawa Barat)</h3>
+            <div class="card mb-5">
+                <div class="card-body p-2">
+                    <div id="map"></div>
+                    <div class="mt-2 text-center small">
+                        <span class="text-success">● Hujan Ringan (0-5mm)</span> | 
+                        <span class="text-danger">● Hujan Lebat (>5mm)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // 1. LOGIKA PREDIKSI
+    document.getElementById('predictForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const model = document.getElementById('modelSelect').value;
+        if(model === "-- Pilih --") return alert("Pilih model dulu!");
+
+        const data = {
+            model_name: model,
+            lat: document.getElementById('lat').value,
+            lon: document.getElementById('lon').value,
+            suhu: document.getElementById('suhu').value,
+            lembab: document.getElementById('lembab').value,
+            tekanan: document.getElementById('tekanan').value,
+            angin: document.getElementById('angin').value
+        };
+
+        fetch('/predict', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+        .then(r => r.json())
+        .then(res => {
+            const box = document.getElementById('resultBox');
+            box.classList.remove('d-none');
+            document.getElementById('resValue').innerText = res.result;
+            document.getElementById('resType').innerText = res.tipe;
+        });
+    });
+
+    // 2. LOGIKA PETA (DIAMBIL DARI API)
+    var map = L.map('map').setView([-6.92, 107.60], 8);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    fetch('/api/map-data')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(p => {
+                var warna = p.hujan_mm > 5 ? 'red' : 'green';
+                L.circleMarker([p.lat, p.lon], {
+                    radius: 5, color: warna, fillColor: warna, fillOpacity: 0.6
+                }).bindPopup(`Curah Hujan: ${p.hujan_mm.toFixed(1)} mm`).addTo(map);
+            });
+        });
+
+    // Klik peta untuk isi koordinat otomatis
+    map.on('click', function(e) {
+        document.getElementById('lat').value = e.latlng.lat.toFixed(4);
+        document.getElementById('lon').value = e.latlng.lng.toFixed(4);
+    });
+</script>
+</body>
+</html>
