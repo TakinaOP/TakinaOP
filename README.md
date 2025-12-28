@@ -1,1 +1,1 @@
-halo gua mahasiswa geodesi yg sekarang lagi seemster tiga
+semuanya bingung apalagi gua
